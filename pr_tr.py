@@ -6,14 +6,13 @@ ITERATIONS = 100
 ### TODO 1: Compute stochastic matrix M
 def getM(L):
     # TODO1: Compute stochastic matrix M
-    lsize = len(L)
-    matrix = np.zeros([lsize, lsize], dtype=float)
+    matrix = np.zeros([len(L), len(L)], dtype=float)
     # number of outgoing links
-    c = np.zeros([lsize], dtype=float)
+    c = np.zeros([len(L)], dtype=float)
 
-    for i in range(0, lsize):
+    for i in range(0, len(L)):
         c[i] = sum(L[i])
-        for j in range(0, lsize):
+        for j in range(0, len(L)):
             if L[i][j] == 1:
                 matrix[i][j] = 1 / c[i]
     return matrix
@@ -21,13 +20,12 @@ def getM(L):
 
 def pageRank(M, q):
     # TODO2: compute PageRank with damping factor q (method parameter)
-    msize = len(M)
-    pagerank = np.ones([msize], dtype=float)
+    pagerank = np.ones([len(M)], dtype=float)
 
     for i in range(0, ITERATIONS):
-        for j in range(0, msize):
+        for j in range(0, len(M)):
             pageRankValue = 0
-            for k in range(0, msize):
+            for k in range(0, len(M)):
                 pageRankValue += pagerank[k] * M[k][j]
             pagerank[j] = ((1 - q) * pageRankValue) + q
 
@@ -38,22 +36,20 @@ def trustRank(M, q):
     # TODO3: compute TrustRank with damping factor q (method parameter)
     # pages 1 and 2 are good (indexes 0 and 1)
     # return array of TrustRank values (indexes: page number - 1, e.g. result[0] = TrustRank of page 1).
-    msize = len(M)
-    trustrank = np.zeros([msize], dtype=float)
+    trustrank = np.zeros([len(M)], dtype=float)
     trustrank[0] = 1
     trustrank[1] = 1
     trustrankSum = sum(trustrank)
 
-    for i in range(0, msize):
+    for i in range(0, len(M)):
         trustrank[i] = (trustrank[i] / trustrankSum)
 
     for i in range(0, ITERATIONS):
-        for j in range(0, msize):
+        for j in range(0, len(M)):
             trustRankValue = 0
-            for k in range(0, msize):
+            for k in range(0, len(M)):
                 trustRankValue += trustrank[k] * M[k][j]
-            trustrank[j] = ((1 - q) * trustRankValue) + q*trustrank[j]
-
+            trustrank[j] = ((1 - q) * trustRankValue) + q * trustrank[j]
     return trustrank
 
 
